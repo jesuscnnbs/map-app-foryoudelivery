@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { clearDataset, loadDataset, saveDataset } from '../lib/db'
 import { parseExcelFile } from '../lib/parseExcel'
-import { groupStops, type StopGroup } from '../lib/stops'
+import { groupLocations, type LocationGroup } from '../lib/locations'
 import type { LoadedDataset, Stop } from '../types/stop'
 
 type Status = 'loading' | 'ready' | 'error'
@@ -64,9 +64,9 @@ function reducer(state: StopsState, action: Action): StopsState {
 
 interface StopsContextValue extends StopsState {
   stops: Stop[]
-  stopGroups: StopGroup[]
+  locationGroups: LocationGroup[]
   selectedStop: Stop | null
-  stopCount: number
+  locationCount: number
   packagesCount: number
   loadFile: (
     file: File,
@@ -133,22 +133,22 @@ export function StopsProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const stops = state.dataset?.stops ?? EMPTY_STOPS
-  const stopGroups = useMemo(() => groupStops(stops), [state.dataset])
+  const locationGroups = useMemo(() => groupLocations(stops), [state.dataset])
 
   const value = useMemo<StopsContextValue>(() => {
     const selectedStop = stops.find((s) => s.id === state.selectedStopId) ?? null
     return {
       ...state,
       stops,
-      stopGroups,
+      locationGroups,
       selectedStop,
-      stopCount: stopGroups.length,
+      locationCount: locationGroups.length,
       packagesCount: stops.length,
       loadFile,
       clear,
       selectStop,
     }
-  }, [state, stops, stopGroups, loadFile, clear, selectStop])
+  }, [state, stops, locationGroups, loadFile, clear, selectStop])
 
   return <StopsContext.Provider value={value}>{children}</StopsContext.Provider>
 }

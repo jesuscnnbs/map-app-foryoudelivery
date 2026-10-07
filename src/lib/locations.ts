@@ -1,6 +1,6 @@
 import type { Stop } from '../types/stop'
 
-export interface StopGroup {
+export interface LocationGroup {
   key: string
   number: number
   lat: number
@@ -14,8 +14,8 @@ export function coordinateKey(stop: Pick<Stop, 'lat' | 'lng'>): string {
   return `${stop.lat},${stop.lng}`
 }
 
-export function groupStops(stops: Stop[]): StopGroup[] {
-  const map = new Map<string, StopGroup>()
+export function groupLocations(stops: Stop[]): LocationGroup[] {
+  const map = new Map<string, LocationGroup>()
 
   stops.forEach((stop) => {
     const key = coordinateKey(stop)

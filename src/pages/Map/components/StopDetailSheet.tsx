@@ -41,7 +41,7 @@ export default function StopDetailSheet({ stop, onClose }: StopDetailSheetProps)
               {stop.stop}
             </span>
             <h2 className="text-base font-semibold">
-              {stop.place || stop.address || `Parada ${stop.stop}`}
+              {stop.place || stop.address || `Ubicación ${stop.stop}`}
             </h2>
           </div>
           <button

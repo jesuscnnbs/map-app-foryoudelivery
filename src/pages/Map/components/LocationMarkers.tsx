@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import { useMap } from 'react-leaflet'
-import type { StopGroup } from '../../../lib/stops'
+import type { LocationGroup } from '../../../lib/locations'
 
-interface StopMarkersProps {
-  groups: StopGroup[]
+interface LocationMarkersProps {
+  groups: LocationGroup[]
   selectedStopId: string | null
   onSelect: (id: string) => void
-  onSelectGroup: (group: StopGroup) => void
+  onSelectGroup: (group: LocationGroup) => void
 }
 
 function labelSize(number: number): number {
@@ -16,7 +16,7 @@ function labelSize(number: number): number {
   return 12
 }
 
-function buildIcon(group: StopGroup, active: boolean) {
+function buildIcon(group: LocationGroup, active: boolean) {
   const packages = group.packages.length
   const classes = ['stop-marker']
   if (active) classes.push('stop-marker--active')
@@ -31,7 +31,7 @@ function buildIcon(group: StopGroup, active: boolean) {
     badges.push('<span class="stop-marker__depot" title="Estación de salida">🏠</span>')
   } else if (packages > 1) {
     badges.push(
-      `<span class="stop-marker__packages" title="${packages} paquetes en esta parada">📦${packages}</span>`,
+      `<span class="stop-marker__packages" title="${packages} paquetes en esta ubicación">📦${packages}</span>`,
     )
   }
 
@@ -48,20 +48,23 @@ function buildIcon(group: StopGroup, active: boolean) {
   })
 }
 
-function groupOfStop(groups: StopGroup[], stopId: string | null): StopGroup | null {
+function groupOfStop(
+  groups: LocationGroup[],
+  stopId: string | null,
+): LocationGroup | null {
   if (!stopId) return null
   return groups.find((group) => group.packages.some((stop) => stop.id === stopId)) ?? null
 }
 
-export default function StopMarkers({
+export default function LocationMarkers({
   groups,
   selectedStopId,
   onSelect,
   onSelectGroup,
-}: StopMarkersProps) {
+}: LocationMarkersProps) {
   const map = useMap()
   const markersRef = useRef<Map<string, L.Marker>>(new Map())
-  const groupsRef = useRef<StopGroup[]>([])
+  const groupsRef = useRef<LocationGroup[]>([])
   const prevSelectedRef = useRef<string | null>(null)
 
   useEffect(() => {

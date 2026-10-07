@@ -1,17 +1,17 @@
 import { useEffect, useMemo } from 'react'
 import { latLngBounds } from 'leaflet'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
-import type { StopGroup } from '../../../lib/stops'
-import StopMarkers from './StopMarkers'
+import type { LocationGroup } from '../../../lib/locations'
+import LocationMarkers from './LocationMarkers'
 
 interface MapViewProps {
-  groups: StopGroup[]
+  groups: LocationGroup[]
   selectedStopId: string | null
   onSelect: (id: string) => void
-  onSelectGroup: (group: StopGroup) => void
+  onSelectGroup: (group: LocationGroup) => void
 }
 
-function FitBounds({ groups, boundsKey }: { groups: StopGroup[]; boundsKey: string }) {
+function FitBounds({ groups, boundsKey }: { groups: LocationGroup[]; boundsKey: string }) {
   const map = useMap()
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function MapView({
         maxZoom={19}
       />
       <FitBounds groups={groups} boundsKey={boundsKey} />
-      <StopMarkers
+      <LocationMarkers
         groups={groups}
         selectedStopId={selectedStopId}
         onSelect={onSelect}

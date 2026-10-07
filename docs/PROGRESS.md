@@ -24,54 +24,68 @@ bloque de trabajo.
   🕒 si hay ventana horaria, ajuste automático de bounds.
 - `StopDetailSheet`: bottom sheet con todos los campos y botones a Google Maps.
 - Página `/stops`: tabla con las 12 columnas; tocar una fila abre el detalle.
-- PWA: `vite-plugin-pwa`, manifest en español, iconos generados con script
-  propio (sin dependencias) y `404.html` para SPA en GitHub Pages.
+- PWA: `vite-plugin-pwa`, manifest en español y `404.html` para SPA en GitHub
+  Pages.
 - Workflow de GitHub Actions para desplegar en GitHub Pages en cada push a
   `main`.
 
-### Pendiente / ideas
-
-- Búsqueda y filtro por Stop / Tracking ID / Place.
-- Geolocalización y orden por cercanía.
-- Cacheo de tiles del mapa para uso offline.
-
-## 2026-10-06 — Selección de ruta (1..N) y parada/paquete
+## 2026-10-06 — Selección de ruta (1..N) y ubicación/paquete
 
 - **Selección de ruta**: el Excel tiene 20-30 pestañas (una por ruta). Se añade
   `listExcelSheets(file)` y `/load-excel` muestra un `SheetPicker` con las rutas
   **numeradas de 1 a N**. El dataset guarda `routeNumber` (y `sheetName` como
-  detalle); la cabecera muestra "Ruta N · X paradas · Y paquetes".
-- **Parada vs paquete**: se descarta el clustering por radio. `StopMarkers`
-  agrupa solo las filas con la **misma coordenada exacta** → una parada. Un
-  paquete = una fila. Las paradas con varios paquetes muestran un badge 📦N y al
-  pulsarlas ubicacionesPackagesSheet` con la lista de paquetes de esa parada.
-- **Contadores**: `stopCount` (paradas, coordenadas únicas) y `packagesCount`
-  (filas) derivados en el contexto y mostrados en mapa, cabecera y lista.
-- Verificado en navegador headless previamente el flujo de carga multi-pestaña,
-  selección de ruta, detalle y enlaces a Google Maps. Sin errores de consola.
+  detalle).
+- **Ubicación vs paquete**: se descarta el clustering por radio. `LocationMarkers`
+  agrupa solo las filas con la **misma coordenada exacta** → una ubicación. Un
+  paquete = una fila. Las ubicaciones con varios paquetes muestran un badge 📦N y
+  al pulsarlas abren `PackagesSheet` con la lista de paquetes de esa ubicación.
+- **Contadores**: `locationCount` (ubicaciones, coordenadas únicas) y
+  `packagesCount` (filas) derivados en el contexto y mostrados en mapa, cabecera
+  y lista.
 
-### Pendiente / ideas
+## 2026-10-06 — Numeración por ubicación y estación de salida
 
-- Búsqueda y filtro por Stop / Tracking ID / Place.
-- Geolocalización y orden por cercanía.
-- Cacheo de tiles del mapa para uso offline.
-- Recordar la última ruta elegida.
-
-## 2026-10-06 — Numeración por parada y estación de salida
-
-- **Numeración secuencial**: `lib/stops.ts` (`groupStops`) numera las paradas
-  1..N por orden de aparición, no por la columna `Stop`. Ya no hay saltos cuando
-  una parada tiene varios paquetes (1 → 2, no 1 → 4).
-- **Estación de salida**: la primera y la última parada se marcan como `isDepot`
-  y se muestran en verde con badge 🏠; si comparten coordenada quedan agrupadas.
-  Al pulsarlas se abre `PackagesSheet` con la etiqueta "Estación de salida".
-- Verificado en navegador headless con 25 filas (22 en una parada): marcadores
+- **Numeración secuencial**: `lib/locations.ts` (`groupLocations`) numera las
+  ubicaciones 1..N por orden de aparición, no por la columna `Stop`. Ya no hay
+  saltos cuando una ubicación tiene varios paquetes (1 → 2, no 1 → 4).
+- **Estación de salida**: la primera y la última ubicación se marcan como
+  `isDepot` y se muestran en verde con badge 🏠; si comparten coordenada quedan
+  agrupadas. Al pulsarlas se abre `PackagesSheet` con la etiqueta "Estación de
+  salida".
+- Verificado en navegador headless con 25 filas (22 en una ubicación): marcadores
   1,2,3,4, 2 depots detectados, sheet de salida con 22 registros. Sin errores de
   consola.
 
+## 2026-10-07 — Identidad visual y logo
+
+- **Paleta Amazon** en un tema propio de daisyUI (`amazon`): naranja `#ff9900`,
+  azul `#146eb4`, azul oscuro `#232f3e`, gris claro `#f2f2f2`, negro `#000000`.
+  Cabecera en `#232f3e`, marcadores y primarios en azul, acentos en naranja.
+- **Logo**: SVG del camión (`src/assets/delivery-truck-truck-svgrepo-com.svg`)
+  usado en cabecera y en la pantalla de carga.
+- **Iconos PWA**: generados desde el SVG con `@vite-pwa/assets-generator`
+  integrado en `vite-plugin-pwa` (`pwaAssets`). El SVG se limpia (se elimina el
+  `transform` del nodo raíz que lo dejaba en blanco al rasterizar) y
+  `scripts/sync-icons.mjs` lo copia a `public/` en `prebuild`.
+
+## 2026-10-07 — Uso sin conexión e instalación
+
+- **Caché de tiles**: `workbox.runtimeCaching` cachea los tiles de OSM
+  (`tile.openstreetmap.org`) con `CacheFirst` en `map-tiles`; al hacer zoom o
+  mover el mapa no se vuelven a pedir los tiles ya vistos.
+- **Descarga previa de la ruta**: `lib/tiles.ts` calcula y descarga los tiles del
+  bounding box (zoom 12-17) con progreso y cancelación; botón en `/map`
+  (`OfflineMapButton`) y estado "Mapa offline listo" persistido en IndexedDB.
+- **Instalación**: botón "Instalar app" (`beforeinstallprompt`) e instrucciones
+  para iOS (`InstallPrompt`).
+- **Indicador offline**: banner en `AppLayout` con `useOnlineStatus`.
+- **Renombrado**: el concepto "parada" pasa a "ubicación" en toda la UI y el
+  código (`LocationGroup`, `groupLocations`, `locationGroups`, `locationCount`).
+
 ### Pendiente / ideas
 
 - Búsqueda y filtro por Stop / Tracking ID / Place.
 - Geolocalización y orden por cercanía.
-- Cacheo de tiles del mapa para uso offline.
 - Recordar la última ruta elegida.
+- Proveedor de tiles con plan offline para producción (OSM desaconseja descargas
+  masivas).

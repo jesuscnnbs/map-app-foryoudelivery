@@ -5,7 +5,7 @@ import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import logo from '../assets/delivery-truck-truck-svgrepo-com.svg'
 
 export default function AppLayout() {
-  const { dataset, stopCount, packagesCount } = useStops()
+  const { dataset, locationCount, packagesCount } = useStops()
   const online = useOnlineStatus()
   const location = useLocation()
 
@@ -13,7 +13,7 @@ export default function AppLayout() {
     location.pathname === '/load-excel'
       ? 'Cargar Excel'
       : location.pathname === '/stops'
-        ? 'Lista de paradas'
+        ? 'Lista de ubicaciones'
         : 'Mapa'
 
   return (
@@ -26,8 +26,8 @@ export default function AppLayout() {
           <h1 className="truncate text-base font-semibold leading-tight">{title}</h1>
           {dataset && (
             <p className="truncate text-xs opacity-90">
-              Ruta {dataset.routeNumber} · {stopCount} paradas · {packagesCount}{' '}
-              paquetes
+              Ruta {dataset.routeNumber} · {locationCount} ubicaciones ·{' '}
+              {packagesCount} paquetes
             </p>
           )}
         </div>

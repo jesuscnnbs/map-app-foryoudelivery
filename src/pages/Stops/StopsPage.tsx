@@ -3,14 +3,14 @@ import StopDetailSheet from '../Map/components/StopDetailSheet'
 import StopsTable from './components/StopsTable'
 
 export default function StopsPage() {
-  const { stops, dataset, selectedStop, selectStop, stopCount, packagesCount } =
+  const { stops, dataset, selectedStop, selectStop, locationCount, packagesCount } =
     useStops()
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between gap-2 bg-base-100 px-4 py-2 text-xs">
         <span className="font-medium">
-          {stopCount} paradas · {packagesCount} paquetes
+          {locationCount} ubicaciones · {packagesCount} paquetes
         </span>
         {dataset && dataset.skippedRows > 0 && (
           <span className="text-warning">

@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useStops } from '../../context/StopsContext'
 import { useOnlineStatus } from '../../hooks/useOnlineStatus'
-import type { StopGroup } from '../../lib/stops'
+import type { LocationGroup } from '../../lib/locations'
 import { boundsFromPoints } from '../../lib/tiles'
 import MapView from './components/MapView'
 import OfflineMapButton from './components/OfflineMapButton'
@@ -9,22 +9,22 @@ import PackagesSheet from './components/PackagesSheet'
 import StopDetailSheet from './components/StopDetailSheet'
 
 export default function MapPage() {
-  const { stopGroups, selectedStop, selectStop, stopCount, packagesCount, dataset } =
+  const { locationGroups, selectedStop, selectStop, locationCount, packagesCount, dataset } =
     useStops()
   const online = useOnlineStatus()
-  const [selectedGroup, setSelectedGroup] = useState<StopGroup | null>(null)
+  const [selectedGroup, setSelectedGroup] = useState<LocationGroup | null>(null)
 
-  const handleSelectGroup = useCallback((group: StopGroup) => {
+  const handleSelectGroup = useCallback((group: LocationGroup) => {
     setSelectedGroup(group)
   }, [])
 
-  const bounds = useMemo(() => boundsFromPoints(stopGroups), [stopGroups])
+  const bounds = useMemo(() => boundsFromPoints(locationGroups), [locationGroups])
   const routeKey = dataset ? `${dataset.fileName}::${dataset.sheetName}` : ''
 
   return (
     <div className="relative h-full w-full">
       <MapView
-        groups={stopGroups}
+        groups={locationGroups}
         selectedStopId={selectedStop?.id ?? null}
         onSelect={selectStop}
         onSelectGroup={handleSelectGroup}
@@ -32,7 +32,7 @@ export default function MapPage() {
 
       <div className="pointer-events-none absolute left-3 top-3 z-[500] rounded-lg bg-base-100/95 px-3 py-2 text-xs shadow">
         <p className="font-medium">
-          {stopCount} paradas · {packagesCount} paquetes
+          {locationCount} ubicaciones · {packagesCount} paquetes
         </p>
         <p className="text-base-content/60">
           🏠 salida · 📦 varios paquetes · 🕒 ventana horaria

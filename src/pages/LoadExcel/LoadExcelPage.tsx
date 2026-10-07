@@ -10,7 +10,7 @@ import FilePicker from './components/FilePicker'
 import SheetPicker from './components/SheetPicker'
 
 export default function LoadExcelPage() {
-  const { dataset, loadFile, clear } = useStops()
+  const { dataset, loadFile, clear, locationCount } = useStops()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -77,7 +77,7 @@ export default function LoadExcelPage() {
                   Ruta <strong>{dataset.routeNumber}</strong>
                   {dataset.sheetName.trim() !== String(dataset.routeNumber) &&
                     ` (${dataset.sheetName})`}{' '}
-                  · {dataset.stops.length} paquetes
+                  · {locationCount} ubicaciones · {dataset.stops.length} paquetes
                   {dataset.skippedRows > 0 &&
                     ` · ${dataset.skippedRows} filas omitidas`}
                 </p>

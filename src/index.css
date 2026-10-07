@@ -118,7 +118,7 @@ body {
   border: 1.5px solid #ffffff;
 }
 
-/* Parada con varios paquetes en la misma ubicación */
+/* Ubicación con varios paquetes (misma coordenada) */
 .stop-marker__packages {
   position: absolute;
   bottom: -8px;
@@ -142,7 +142,7 @@ body {
   border-color: var(--amazon-orange);
 }
 
-/* Estación de salida (primera y última parada) */
+/* Estación de salida (primera y última ubicación) */
 .stop-marker--depot .stop-marker__pin {
   background: var(--amazon-orange);
   border-color: #ffffff;

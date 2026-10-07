@@ -9,9 +9,13 @@ export default async function run(page) {
   await page.waitForSelector('.leaflet-container', { timeout: 15000 })
   await page.waitForTimeout(1200)
 
+  const legend = await page.evaluate(
+    () => document.querySelector('.absolute.left-3.top-3')?.innerText ?? null,
+  )
+
   await page.getByRole('button', { name: 'Descargar' }).click()
   await page.getByText('Mapa offline listo').waitFor({ timeout: 180000 })
-  const tilesText = await page.evaluate(
+  const offlineLabel = await page.evaluate(
     () => document.querySelector('.text-success')?.textContent ?? null,
   )
 
@@ -23,10 +27,9 @@ export default async function run(page) {
   const offlineState = await page.evaluate(() => ({
     banner: document.body.innerText.includes('Sin conexión'),
     loadedTiles: document.querySelectorAll('img.leaflet-tile-loaded').length,
-    totalTiles: document.querySelectorAll('img.leaflet-tile').length,
-    hasMarkers: document.querySelectorAll('.stop-marker').length,
+    markers: document.querySelectorAll('.stop-marker').length,
   }))
 
   await page.context().setOffline(false)
-  return { tilesText, offlineState }
+  return { legend, offlineLabel, offlineState }
 }

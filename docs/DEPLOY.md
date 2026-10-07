@@ -17,11 +17,24 @@ Pasos la primera vez:
 ## Instalar en Android (Chrome)
 
 1. Abre la URL de GitHub Pages en Chrome.
-2. Menú ⋮ → **Añadir a pantalla de inicio** / **Instalar aplicación**.
+2. Aparecerá el botón **"Instalar app"** dentro de la app, o bien menú ⋮ →
+   **Instalar aplicación** / **Añadir a pantalla de inicio**.
 3. Se abre a pantalla completa, con su icono, sin barra del navegador.
 
 La PWA debe servirse por **HTTPS** para que Chrome ofrezca la instalación; GitHub
 Pages ya lo hace.
+
+En iOS (Safari) no hay prompt nativo: la app muestra las instrucciones
+("Compartir → Añadir a pantalla de inicio").
+
+## Uso sin conexión
+
+- El service worker precachea la app; al abrirla sin red funciona con los datos
+  guardados en IndexedDB.
+- Los tiles del mapa se cachean al navegar. Para tener toda la ruta disponible
+  sin conexión, pulsa **"Descargar mapa offline"** en `/map` (zoom 12-17) antes de
+  salir. El estado por ruta se guarda en IndexedDB.
+- Los enlaces a Google Maps sí necesitan conexión.
 
 ## Desarrollo local
 

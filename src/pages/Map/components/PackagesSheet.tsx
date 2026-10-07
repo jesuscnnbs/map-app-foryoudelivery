@@ -1,8 +1,8 @@
-import type { StopGroup } from '../../../lib/stops'
+import type { LocationGroup } from '../../../lib/locations'
 import type { Stop } from '../../../types/stop'
 
 interface PackagesSheetProps {
-  group: StopGroup
+  group: LocationGroup
   onClose: () => void
   onPick: (stop: Stop) => void
 }
@@ -10,7 +10,7 @@ interface PackagesSheetProps {
 export default function PackagesSheet({ group, onClose, onPick }: PackagesSheetProps) {
   const title = group.isDepot
     ? 'Estación de salida'
-    : `${group.packages.length} paquetes en esta parada`
+    : `${group.packages.length} paquetes en esta ubicación`
 
   return (
     <div className="fixed inset-0 z-[1000]" role="dialog" aria-modal="true">
@@ -63,7 +63,7 @@ export default function PackagesSheet({ group, onClose, onPick }: PackagesSheetP
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium">
-                    {stop.address || `Parada ${stop.stop}`}
+                    {stop.address || `Ubicación ${stop.stop}`}
                   </span>
                   <span className="block truncate text-xs text-base-content/60">
                     {stop.trackingId && `${stop.trackingId} · `}
