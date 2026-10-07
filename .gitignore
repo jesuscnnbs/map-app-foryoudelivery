@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+
+# Assets PWA generados (ver scripts/sync-icons.mjs y vite-plugin-pwa)
+public/delivery-truck-truck-svgrepo-com.svg
+public/*.png
+public/*.ico
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
