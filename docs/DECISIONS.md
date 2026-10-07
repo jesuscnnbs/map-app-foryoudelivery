@@ -9,7 +9,7 @@ datos de clientes.
 ## Persistencia con IndexedDB (en vez de localStorage)
 
 `localStorage` está limitado a ~5 MB y bloquea el hilo principal. Una ruta puede
-tener cientos de paradas; IndexedDB permite guardar estructuras mayores. Se usa
+tener cientos de ubicaciones; IndexedDB permite guardar estructuras mayores. Se usa
 la librería `idb` por su API basada en promesas.
 
 ## `xlsx` con import dinámico
@@ -52,7 +52,7 @@ no el valor de la columna `Stop`. Así, si una parada tiene varios paquetes, la
 siguiente no salta (1 → 2, no 1 → 4). El valor original de `Stop` se conserva en
 la tabla y en el detalle del paquete.
 
-## Primera y última parada = estación de salida
+ubicacionesera y última parada = estación de salida
 
 Por convención de la ruta, la primera y la última fila son la base (salida y
 regreso). `groupStops` marca como `isDepot` el grupo que contiene la primera fila

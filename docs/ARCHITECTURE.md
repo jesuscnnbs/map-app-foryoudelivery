@@ -25,7 +25,7 @@ parseExcel.ts ──► Stop[]  ──► StopsContext (useReducer)
 
 1. En `/load-excel` el usuario selecciona un archivo (`<input type="file">`).
 2. `loadFile(file)` llama a `parseExcelFile`, que devuelve `{ stops, skippedRows }`.
-3. El contexto guarda el `LoadedDataset` (nombre, fecha, paradas, omitidas) y lo
+3. El contexto guarda el `LoadedDataset` (nombre, fecha, ubicaciones, omitidas) y lo
    persiste en IndexedDB.
 4. Al arrancar, `StopsProvider` hidrata el estado desde IndexedDB.
 5. Las rutas protegidas (`/map`, `/stops`) redirigen a `/load-excel` si no hay
@@ -48,7 +48,7 @@ parseExcel.ts ──► Stop[]  ──► StopsContext (useReducer)
 - `id` de cada parada: `${fila}-${stop}` para garantizar unicidad.
 
 ## Mapa
-
+ubicaciones
 - `MapView` monta `MapContainer` + `TileLayer` (OSM).
 - `FitBounds` usa `useMap()` y `fitBounds` al cambiar las paradas.
 - `lib/stops.ts` (`groupStops`) agrupa las filas por coordenada exacta
@@ -58,7 +58,7 @@ parseExcel.ts ──► Stop[]  ──► StopsContext (useReducer)
 - La **primera y la última** parada se marcan como `isDepot` (estación de
   salida). Si comparten coordenada quedan en un único grupo.
 - `StopMarkers` dibuja un pin por parada: azul con el número secuencial; si tiene
-  varios paquetes, badge 📦N; si es depot, pin verde con badge 🏠.
+  varios paquetes, badge 📦N; si es depot, piubicaciones con badge 🏠.
 - Al pulsar una parada de un solo paquete se abre `StopDetailSheet`; si tiene
   varios (o es depot) se abre `PackagesSheet` con la lista de paquetes.
 - `stopCount` (paradas) y `packagesCount` (filas) se derivan en el contexto.

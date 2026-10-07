@@ -1,18 +1,25 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useStops } from '../../context/StopsContext'
+import { useOnlineStatus } from '../../hooks/useOnlineStatus'
 import type { StopGroup } from '../../lib/stops'
+import { boundsFromPoints } from '../../lib/tiles'
 import MapView from './components/MapView'
+import OfflineMapButton from './components/OfflineMapButton'
 import PackagesSheet from './components/PackagesSheet'
 import StopDetailSheet from './components/StopDetailSheet'
 
 export default function MapPage() {
-  const { stopGroups, selectedStop, selectStop, stopCount, packagesCount } =
+  const { stopGroups, selectedStop, selectStop, stopCount, packagesCount, dataset } =
     useStops()
+  const online = useOnlineStatus()
   const [selectedGroup, setSelectedGroup] = useState<StopGroup | null>(null)
 
   const handleSelectGroup = useCallback((group: StopGroup) => {
     setSelectedGroup(group)
   }, [])
+
+  const bounds = useMemo(() => boundsFromPoints(stopGroups), [stopGroups])
+  const routeKey = dataset ? `${dataset.fileName}::${dataset.sheetName}` : ''
 
   return (
     <div className="relative h-full w-full">
@@ -31,6 +38,8 @@ export default function MapPage() {
           🏠 salida · 📦 varios paquetes · 🕒 ventana horaria
         </p>
       </div>
+
+      <OfflineMapButton bounds={bounds} routeKey={routeKey} online={online} />
 
       {selectedGroup && (
         <PackagesSheet

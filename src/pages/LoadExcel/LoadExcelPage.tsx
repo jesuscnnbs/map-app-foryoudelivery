@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ErrorAlert from '../../components/ErrorAlert'
+import InstallPrompt from '../../components/InstallPrompt'
 import { useStops } from '../../context/StopsContext'
 import { listExcelSheets } from '../../lib/parseExcel'
 import logo from '../../assets/delivery-truck-truck-svgrepo-com.svg'
@@ -63,6 +64,8 @@ export default function LoadExcelPage() {
     <div className="h-full overflow-y-auto">
       <div className="mx-auto flex max-w-md flex-col gap-5 p-4 pb-8">
         {error && <ErrorAlert message={error} onDismiss={() => setError(null)} />}
+
+        <InstallPrompt />
 
         {dataset ? (
           <div className="card bg-base-100 shadow-sm">

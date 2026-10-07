@@ -1,10 +1,12 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import BottomNav from './BottomNav'
 import { useStops } from '../context/StopsContext'
+import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import logo from '../assets/delivery-truck-truck-svgrepo-com.svg'
 
 export default function AppLayout() {
   const { dataset, stopCount, packagesCount } = useStops()
+  const online = useOnlineStatus()
   const location = useLocation()
 
   const title =
@@ -35,6 +37,11 @@ export default function AppLayout() {
           className="h-9 w-9 shrink-0 rounded-lg"
         />
       </header>
+      {!online && (
+        <div className="bg-warning px-4 py-1 text-center text-xs font-medium text-warning-content">
+          Sin conexión · usando datos y mapa guardados
+        </div>
+      )}
       <main className="relative flex-1 overflow-hidden">
         <Outlet />
       </main>

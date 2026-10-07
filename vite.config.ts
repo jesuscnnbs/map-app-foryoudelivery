@@ -32,6 +32,20 @@ export default defineConfig({
         navigateFallback: `${base}index.html`,
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         cleanupOutdatedCaches: true,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/tile\.openstreetmap\.org\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'map-tiles',
+              expiration: {
+                maxEntries: 8000,
+                maxAgeSeconds: 60 * 60 * 24 * 90,
+              },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
       },
       devOptions: {
         enabled: false,

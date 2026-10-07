@@ -44,7 +44,7 @@ bloque de trabajo.
 - **Parada vs paquete**: se descarta el clustering por radio. `StopMarkers`
   agrupa solo las filas con la **misma coordenada exacta** → una parada. Un
   paquete = una fila. Las paradas con varios paquetes muestran un badge 📦N y al
-  pulsarlas abren `PackagesSheet` con la lista de paquetes de esa parada.
+  pulsarlas ubicacionesPackagesSheet` con la lista de paquetes de esa parada.
 - **Contadores**: `stopCount` (paradas, coordenadas únicas) y `packagesCount`
   (filas) derivados en el contexto y mostrados en mapa, cabecera y lista.
 - Verificado en navegador headless previamente el flujo de carga multi-pestaña,

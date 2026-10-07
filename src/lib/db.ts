@@ -1,4 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
+import type { OfflineMapMeta } from './tiles'
 import type { LoadedDataset } from '../types/stop'
 
 interface RutasDB extends DBSchema {
@@ -6,10 +7,14 @@ interface RutasDB extends DBSchema {
     key: string
     value: LoadedDataset
   }
+  mapCache: {
+    key: string
+    value: OfflineMapMeta
+  }
 }
 
 const DB_NAME = 'rutas-reparto'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const DATASET_KEY = 'current'
 
 let dbPromise: Promise<IDBPDatabase<RutasDB>> | null = null
@@ -20,6 +25,9 @@ function getDB() {
       upgrade(db) {
         if (!db.objectStoreNames.contains('dataset')) {
           db.createObjectStore('dataset')
+        }
+        if (!db.objectStoreNames.contains('mapCache')) {
+          db.createObjectStore('mapCache')
         }
       },
     })
@@ -52,5 +60,26 @@ export async function clearDataset(): Promise<void> {
     await db.delete('dataset', DATASET_KEY)
   } catch (error) {
     console.warn('No se pudo borrar el dataset de IndexedDB', error)
+  }
+}
+
+export async function saveMapCache(meta: OfflineMapMeta): Promise<void> {
+  try {
+    const db = await getDB()
+    await db.put('mapCache', meta, meta.routeKey)
+  } catch (error) {
+    console.warn('No se pudo guardar el estado del mapa offline', error)
+  }
+}
+
+export async function loadMapCache(
+  routeKey: string,
+): Promise<OfflineMapMeta | null> {
+  try {
+    const db = await getDB()
+    return (await db.get('mapCache', routeKey)) ?? null
+  } catch (error) {
+    console.warn('No se pudo leer el estado del mapa offline', error)
+    return null
   }
 }

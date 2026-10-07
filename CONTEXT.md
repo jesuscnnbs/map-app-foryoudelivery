@@ -6,7 +6,7 @@ Contexto del proyecto para futuras sesiones de trabajo.
 
 PWA (React + Vite + TypeScript) que lee un Excel de ruta de reparto, procesa las
 ubicaciones en el cliente y las muestra en un mapa (Leaflet) con marcadores
-numerados en azul. Indica qué paradas tienen ventana horaria y permite abrir
+numerados en azul. Indica qué ubicaciones tienen ventana horaria y permite abrir
 Google Maps por dirección o por coordenadas. **No usa backend**: todo se procesa
 y persiste en el dispositivo.
 
