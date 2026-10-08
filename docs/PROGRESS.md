@@ -82,6 +82,17 @@ bloque de trabajo.
 - **Renombrado**: el concepto "parada" pasa a "ubicación" en toda la UI y el
   código (`LocationGroup`, `groupLocations`, `locationGroups`, `locationCount`).
 
+## 2026-10-07 — Detalle de paquete más claro
+
+- En el detalle de un paquete se muestra el **número de la ubicación** (círculo)
+  seguido del **número de paquete** ("Paquete N"), en lugar de mostrar el valor
+  de la columna `Stop` como número principal (evita confusión al pulsar una
+  burbuja: ubicación 117 → paquete 130).
+- Se deja de mostrar el valor de la columna **`Place`** en las hojas de detalle
+  (ubicación y paquete); se usa la dirección como subtítulo.
+- `findLocationByStop` en `lib/locations.ts` para obtener la ubicación de un
+  paquete.
+
 ### Pendiente / ideas
 
 - Búsqueda y filtro por Stop / Tracking ID / Place.

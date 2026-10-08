@@ -35,9 +35,11 @@ export default function PackagesSheet({ group, onClose, onPick }: PackagesSheetP
             </span>
             <div>
               <h2 className="text-base font-semibold">{title}</h2>
-              <p className="text-xs text-base-content/60">
-                {group.packages[0].place || group.packages[0].address}
-              </p>
+              {group.packages[0].address && (
+                <p className="truncate text-xs text-base-content/60">
+                  {group.packages[0].address}
+                </p>
+              )}
             </div>
           </div>
           <button
@@ -63,7 +65,7 @@ export default function PackagesSheet({ group, onClose, onPick }: PackagesSheetP
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-sm font-medium">
-                    {stop.address || `Ubicación ${stop.stop}`}
+                    {stop.address || `Paquete ${stop.stop}`}
                   </span>
                   <span className="block truncate text-xs text-base-content/60">
                     {stop.trackingId && `${stop.trackingId} · `}

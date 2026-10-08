@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useStops } from '../../context/StopsContext'
 import { useOnlineStatus } from '../../hooks/useOnlineStatus'
-import type { LocationGroup } from '../../lib/locations'
+import { findLocationByStop, type LocationGroup } from '../../lib/locations'
 import { boundsFromPoints } from '../../lib/tiles'
 import MapView from './components/MapView'
 import OfflineMapButton from './components/OfflineMapButton'
@@ -19,6 +19,10 @@ export default function MapPage() {
   }, [])
 
   const bounds = useMemo(() => boundsFromPoints(locationGroups), [locationGroups])
+  const selectedLocation = useMemo(
+    () => findLocationByStop(locationGroups, selectedStop?.id ?? null),
+    [locationGroups, selectedStop],
+  )
   const routeKey = dataset ? `${dataset.fileName}::${dataset.sheetName}` : ''
 
   return (
@@ -53,7 +57,11 @@ export default function MapPage() {
       )}
 
       {selectedStop && (
-        <StopDetailSheet stop={selectedStop} onClose={() => selectStop(null)} />
+        <StopDetailSheet
+          stop={selectedStop}
+          locationNumber={selectedLocation?.number}
+          onClose={() => selectStop(null)}
+        />
       )}
     </div>
   )

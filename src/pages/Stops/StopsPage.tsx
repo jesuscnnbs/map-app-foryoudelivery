@@ -1,10 +1,22 @@
 import { useStops } from '../../context/StopsContext'
+import { findLocationByStop } from '../../lib/locations'
 import StopDetailSheet from '../Map/components/StopDetailSheet'
 import StopsTable from './components/StopsTable'
 
 export default function StopsPage() {
-  const { stops, dataset, selectedStop, selectStop, locationCount, packagesCount } =
-    useStops()
+  const {
+    stops,
+    locationGroups,
+    dataset,
+    selectedStop,
+    selectStop,
+    locationCount,
+    packagesCount,
+  } = useStops()
+  const selectedLocation = findLocationByStop(
+    locationGroups,
+    selectedStop?.id ?? null,
+  )
 
   return (
     <div className="flex h-full flex-col">
@@ -27,7 +39,11 @@ export default function StopsPage() {
       </div>
 
       {selectedStop && (
-        <StopDetailSheet stop={selectedStop} onClose={() => selectStop(null)} />
+        <StopDetailSheet
+          stop={selectedStop}
+          locationNumber={selectedLocation?.number}
+          onClose={() => selectStop(null)}
+        />
       )}
     </div>
   )

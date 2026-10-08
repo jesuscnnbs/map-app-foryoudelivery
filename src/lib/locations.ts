@@ -14,6 +14,14 @@ export function coordinateKey(stop: Pick<Stop, 'lat' | 'lng'>): string {
   return `${stop.lat},${stop.lng}`
 }
 
+export function findLocationByStop(
+  groups: LocationGroup[],
+  stopId: string | null,
+): LocationGroup | null {
+  if (!stopId) return null
+  return groups.find((group) => group.packages.some((stop) => stop.id === stopId)) ?? null
+}
+
 export function groupLocations(stops: Stop[]): LocationGroup[] {
   const map = new Map<string, LocationGroup>()
 

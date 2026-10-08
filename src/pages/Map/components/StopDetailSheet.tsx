@@ -3,6 +3,7 @@ import type { Stop } from '../../../types/stop'
 
 interface StopDetailSheetProps {
   stop: Stop
+  locationNumber?: number
   onClose: () => void
 }
 
@@ -18,7 +19,11 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   )
 }
 
-export default function StopDetailSheet({ stop, onClose }: StopDetailSheetProps) {
+export default function StopDetailSheet({
+  stop,
+  locationNumber,
+  onClose,
+}: StopDetailSheetProps) {
   const addressLink = googleMapsByAddress(stop)
   const coordinatesLink = googleMapsByCoordinates(stop)
   const hasAddress = Boolean(stop.address.trim())
@@ -36,13 +41,20 @@ export default function StopDetailSheet({ stop, onClose }: StopDetailSheetProps)
         style={{ paddingBottom: 'calc(var(--safe-bottom) + 1rem)' }}
       >
         <div className="sticky top-0 flex items-center justify-between gap-2 border-b border-base-200 bg-base-100 px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-content">
-              {stop.stop}
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-content">
+              {locationNumber ?? stop.stop}
             </span>
-            <h2 className="text-base font-semibold">
-              {stop.place || stop.address || `Ubicación ${stop.stop}`}
-            </h2>
+            <div className="min-w-0">
+              <h2 className="truncate text-base font-semibold">
+                Paquete {stop.stop}
+              </h2>
+              {stop.address && (
+                <p className="truncate text-xs text-base-content/60">
+                  {stop.address}
+                </p>
+              )}
+            </div>
           </div>
           <button
             type="button"
